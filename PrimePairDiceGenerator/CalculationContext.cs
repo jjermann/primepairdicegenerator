@@ -18,12 +18,17 @@ namespace PrimePairDiceGenerator
             ShowProgress = showProgress;
             Max = max;
             DiceSides = diceSides;
-            OddList = Enumerable.Range(0, max / 2).Select(i => 2 * i + 1).ToList();
+            var maxIsEven = max % 2 == 0;
+            OddList = Enumerable.Range(0, maxIsEven ? max / 2 : (max + 1) / 2).Select(i => 2 * i + 1).ToList();
             Primes = GetPrimes(max*2).ToList();
         }
         
-        private static IEnumerable<int> GetPrimes(int max)
+        public static IEnumerable<int> GetPrimes(int max)
         {
+            if (max <= 1)
+            {
+                yield break;
+            }
             var remainingSieve = Enumerable.Range(1, max).Skip(1).ToList();
             while (remainingSieve.Any()) 
             {
@@ -117,6 +122,10 @@ namespace PrimePairDiceGenerator
 
         private List<int>? GetFirstMatchingEvenCombination(IList<int> oddCombination)
         {
+            if (!oddCombination.Any())
+            {
+                return null;
+            }
             var candidateSet = GetCandidateSet(oddCombination);
             if (candidateSet.Count < DiceSides)
             {
@@ -140,9 +149,9 @@ namespace PrimePairDiceGenerator
 
         private IEnumerable<int> GetCandidatesForEntry(int num)
         {
-            // a candidate needs to be > 0 and <= Max
+            // a candidate needs to be even and > 0 and <= Max
             return Primes
-                .Where(p => p > num && p <= Max + num)
+                .Where(p => p > 2 && p > num && p <= Max + num)
                 .Select(p => p - num);
         }
 
