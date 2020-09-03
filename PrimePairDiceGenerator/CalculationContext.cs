@@ -62,6 +62,59 @@ namespace PrimePairDiceGenerator
             }
         }
 
+        public DicePair? GetSmallestDicePair()
+        {
+            var oddCombinations = new Combinations<int>(OddList, DiceSides, GenerateOption.WithoutRepetition);
+            var currentMax = -1;
+            var currentSum = -1;
+            var index = 0;
+            DicePair? currentDicePair = null;
+            var lastProgress = 0;
+            if (ShowProgress)
+            {
+                DrawTextProgressBar(0, 100);
+            }
+            foreach (var oddComb in oddCombinations)
+            {
+                if (ShowProgress)
+                {
+                    var currentProgress = (int)(index * 100 / oddCombinations.Count);
+                    if (currentProgress != lastProgress)
+                    {
+                        DrawTextProgressBar(currentProgress, 100);
+                        lastProgress = currentProgress;
+                    }
+                }
+                index++;
+                if (currentMax > 0 && oddComb.Max() > currentMax)
+                {
+                    continue;
+                }
+                var evenComb = GetFirstMatchingEvenCombination(oddComb);
+                if (evenComb != null)
+                {
+                    var dicePair = new DicePair(oddComb, evenComb);
+                    var newMax = dicePair.GetMax();
+                    var newSum = dicePair.GetSum();
+                    var isImprovement = currentMax < 0
+                                        || newMax < currentMax
+                                        || (newMax == currentMax && newSum < currentSum);
+                    if (isImprovement)
+                    {
+                        currentMax = newMax;
+                        currentSum = newSum;
+                        currentDicePair = dicePair;
+                    }
+                }
+            }
+            if (ShowProgress)
+            {
+                DrawTextProgressBar(100, 100);
+            }
+
+            return currentDicePair;
+        }
+
         private List<int>? GetFirstMatchingEvenCombination(IList<int> oddCombination)
         {
             var candidateSet = GetCandidateSet(oddCombination);
