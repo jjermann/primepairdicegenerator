@@ -11,7 +11,7 @@ namespace PrimePairDiceGenerator
             if (smallestPair != null)
             {
                 Console.WriteLine();
-                Console.WriteLine($"{smallestPair} (Max = {smallestPair.GetMax()}, Sum = {smallestPair.GetSum()})");
+                Console.WriteLine($"{smallestPair} (Max = {smallestPair.GetMax()}, MaxPrime = {smallestPair.GetMaxPrime()}, Sum = {smallestPair.GetSum()})");
             }
             else
             {

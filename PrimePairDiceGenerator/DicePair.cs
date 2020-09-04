@@ -26,6 +26,11 @@ namespace PrimePairDiceGenerator
             return OddComb.Union(EvenComb).Max();
         }
 
+        public int GetMaxPrime()
+        {
+            return OddComb.Max() + EvenComb.Max();
+        }
+
         public int GetSum()
         {
             return OddComb.Sum() + EvenComb.Sum();

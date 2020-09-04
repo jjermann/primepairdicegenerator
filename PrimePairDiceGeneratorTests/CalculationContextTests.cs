@@ -32,8 +32,8 @@ namespace PrimePairDiceGeneratorTests
             }
         }
 
-        [TestCase(100, 4, ExpectedResult = "[(1,7,13,31),(6,10,16,30)]")]
-        [TestCase(31, 4, ExpectedResult = "[(1,7,13,31),(6,10,16,30)]")]
+        [TestCase(100, 4, ExpectedResult = "[(1,7,25,31),(6,12,16,22)]")]
+        [TestCase(31, 4, ExpectedResult = "[(1,7,25,31),(6,12,16,22)]")]
         [TestCase(30, 4, ExpectedResult = null)]
         [TestCase(2, 1, ExpectedResult = "[(1),(2)]")]
         [TestCase(1, 1, ExpectedResult = null)]

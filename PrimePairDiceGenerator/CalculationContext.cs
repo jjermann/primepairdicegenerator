@@ -72,6 +72,7 @@ namespace PrimePairDiceGenerator
             var oddCombinations = new Combinations<int>(OddList, DiceSides, GenerateOption.WithoutRepetition);
             var currentMax = -1;
             var currentSum = -1;
+            var currentMaxPrime = -1;
             var index = 0;
             DicePair? currentDicePair = null;
             var lastProgress = 0;
@@ -100,13 +101,16 @@ namespace PrimePairDiceGenerator
                 {
                     var dicePair = new DicePair(oddComb, evenComb);
                     var newMax = dicePair.GetMax();
+                    var newMaxPrime = dicePair.GetMaxPrime();
                     var newSum = dicePair.GetSum();
                     var isImprovement = currentMax < 0
                                         || newMax < currentMax
-                                        || (newMax == currentMax && newSum < currentSum);
+                                        || (newMax == currentMax && newMaxPrime < currentMaxPrime)
+                                        || (newMax == currentMax && newMaxPrime == currentMaxPrime && newSum < currentSum);
                     if (isImprovement)
                     {
                         currentMax = newMax;
+                        currentMaxPrime = newMaxPrime;
                         currentSum = newSum;
                         currentDicePair = dicePair;
                     }
